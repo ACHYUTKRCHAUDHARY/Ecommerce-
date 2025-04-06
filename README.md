@@ -90,6 +90,62 @@ npm run frontend
 
 The frontend will run on http://localhost:5173 and the backend on http://localhost:5000
 
+## Deployment on Vercel
+
+### Frontend Deployment
+1. Push your code to a GitHub repository
+2. Go to [Vercel](https://vercel.com) and sign up/login with your GitHub account
+3. Click on "New Project" and import your GitHub repository
+4. For the frontend deployment:
+   - Select the `frontend` directory as the root directory
+   - Framework preset: Select `Vite`
+   - Build command: `npm run build`
+   - Output directory: `dist`
+   - Install command: `npm install`
+5. Add the following environment variables in Vercel:
+   ```
+   VITE_API_URL=your_backend_api_url
+   ```
+
+### Backend Deployment
+1. Create a new project in Vercel for the backend
+2. Select the root directory of your project
+3. Override the build settings:
+   - Build command: `npm install`
+   - Output directory: `backend`
+   - Install command: `npm install`
+4. Add the following environment variables:
+   ```
+   PORT=5000
+   MONGO_URI=your_mongodb_uri
+   JWT_SECRET=your_jwt_secret
+   PAYPAL_CLIENT_ID=your_paypal_client_id
+   NODE_ENV=production
+   ```
+5. Create a `vercel.json` file in your root directory:
+   ```json
+   {
+     "version": 2,
+     "builds": [
+       {
+         "src": "backend/index.js",
+         "use": "@vercel/node"
+       }
+     ],
+     "routes": [
+       {
+         "src": "/(.*)",
+         "dest": "backend/index.js"
+       }
+     ]
+   }
+   ```
+
+### Important Notes
+- Make sure your MongoDB database is accessible from Vercel's servers
+- Update the frontend API base URL to point to your deployed backend URL
+- Enable CORS in your backend for the frontend domain
+
 ## API Endpoints
 
 ### Products
